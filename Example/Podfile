@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'PGImageCarousel_Example' do
+  pod 'PGImageCarousel', :path => '../'
+
+  target 'PGImageCarousel_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
