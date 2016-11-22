@@ -1,0 +1,22 @@
+{
+  "name": "PGImageCarousel",
+  "version": "0.1.0",
+  "summary": "A scrollable ImageCarousel with page indicator",
+  "description": "This CocoaPod provides a flexible and reusable scrollable ImageCarousel \nUIComponent that can be initialized with an array of images. Features \ninclude page indicator and different grid sizes.",
+  "homepage": "https://github.com/peygar/PGImageCarousel",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Peyman Gardideh": "peyman+github@halfmoon.ws"
+  },
+  "source": {
+    "git": "https://github.com/peygar/PGImageCarousel.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "PGImageCarousel/Classes/**/*"
+}

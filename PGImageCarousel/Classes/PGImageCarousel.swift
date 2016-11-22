@@ -10,7 +10,7 @@ import UIKit
 
 class PGImageCarousel: UIView {
     // MARK: Outlets
-    @IBOutlet private var contentView: UIView!
+    @IBOutlet fileprivate var contentView: UIView!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var pageIndicator: UIPageControl!
     
@@ -42,7 +42,7 @@ class PGImageCarousel: UIView {
         self.sharedInit()
     }
     
-    private func sharedInit() {
+    fileprivate func sharedInit() {
         self.loadViewFromNib()
         self.setupCollectionView()
     }
@@ -53,25 +53,25 @@ class PGImageCarousel: UIView {
     }
     
     // MARK: Helpers
-    private func loadViewFromNib() {
+    fileprivate func loadViewFromNib() {
         let viewNib = UINib(nibName: String(describing: PGImageCarousel.self), bundle: nil)
         viewNib.instantiate(withOwner: self, options: nil)
         self.contentView.frame = self.bounds
         self.addSubview(self.contentView)
     }
     
-    private func setupCollectionView() {
+    fileprivate func setupCollectionView() {
         self.registerCellNib()
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
     }
     
-    private func registerCellNib() {
+    fileprivate func registerCellNib() {
         let imageCellNib = UINib(nibName: String(describing: PGImageCarouselCell.self), bundle: nil)
         self.imageCollectionView?.register(imageCellNib, forCellWithReuseIdentifier: String(describing: PGImageCarouselCell.self))
     }
     
-    private func resetCollection() {
+    fileprivate func resetCollection() {
         self.pageIndicator.numberOfPages = self.images.count / (self.gridSize * self.gridSize)
         self.pageIndicator.frame.size = self.pageIndicator.size(forNumberOfPages: self.pageIndicator.numberOfPages)
         self.imageCollectionView.reloadData()

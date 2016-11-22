@@ -1,0 +1,16 @@
+PODS:
+  - PGImageCarousel (0.1.0)
+
+DEPENDENCIES:
+  - PGImageCarousel (from `../`)
+
+EXTERNAL SOURCES:
+  PGImageCarousel:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PGImageCarousel: 4efc0058d7d062010336490f8ff033fec302eab0
+
+PODFILE CHECKSUM: f2bff4debbe5baba7ce158a58bae3f2d1e6c1299
+
+COCOAPODS: 1.1.1

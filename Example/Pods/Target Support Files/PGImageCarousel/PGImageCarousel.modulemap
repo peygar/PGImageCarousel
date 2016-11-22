@@ -1,0 +1,6 @@
+framework module PGImageCarousel {
+  umbrella header "PGImageCarousel-umbrella.h"
+
+  export *
+  module * { export * }
+}
