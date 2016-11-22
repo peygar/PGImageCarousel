@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PGImageCarousel" customModule="iOSStarterKit" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="skQ-gM-vWv" id="h3F-Bn-0Ye"/>
+                <outlet property="imageCollectionView" destination="u8G-Eb-guw" id="8WB-pK-vDs"/>
+                <outlet property="pageIndicator" destination="fqS-t6-Ty2" id="vCq-tk-hhM"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="skQ-gM-vWv">
+            <rect key="frame" x="0.0" y="0.0" width="416" height="310"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="u8G-Eb-guw">
+                    <rect key="frame" x="0.0" y="0.0" width="416" height="310"/>
+                    <color key="backgroundColor" red="0.64268663189999997" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="pVA-NJ-h6A">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="fqS-t6-Ty2">
+                    <rect key="frame" x="189" y="253" width="39" height="37"/>
+                </pageControl>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.4765625" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="u8G-Eb-guw" secondAttribute="bottom" id="94O-ax-uHl"/>
+                <constraint firstAttribute="trailing" secondItem="u8G-Eb-guw" secondAttribute="trailing" id="BJO-hl-utp"/>
+                <constraint firstAttribute="bottom" secondItem="fqS-t6-Ty2" secondAttribute="bottom" constant="20" id="JPZ-At-loB"/>
+                <constraint firstItem="u8G-Eb-guw" firstAttribute="top" secondItem="skQ-gM-vWv" secondAttribute="top" id="TNd-Fu-BRI"/>
+                <constraint firstItem="fqS-t6-Ty2" firstAttribute="centerX" secondItem="skQ-gM-vWv" secondAttribute="centerX" id="fsQ-QZ-3ZD"/>
+                <constraint firstItem="u8G-Eb-guw" firstAttribute="leading" secondItem="skQ-gM-vWv" secondAttribute="leading" id="kQp-xL-820"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-320" y="-741"/>
+        </view>
+    </objects>
+</document>
