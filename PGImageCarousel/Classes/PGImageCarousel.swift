@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PGImageCarousel: UIView {
+public class PGImageCarousel: UIView {
     // MARK: Outlets
     @IBOutlet fileprivate var contentView: UIView!
     @IBOutlet weak var imageCollectionView: UICollectionView!
@@ -32,12 +32,12 @@ class PGImageCarousel: UIView {
     }
     
     // MARK: Init
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         self.sharedInit()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.sharedInit()
     }
@@ -47,7 +47,7 @@ class PGImageCarousel: UIView {
         self.setupCollectionView()
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         self.imageCollectionView?.collectionViewLayout.invalidateLayout()
     }
@@ -80,11 +80,11 @@ class PGImageCarousel: UIView {
 
 // MARK: UICollectionViewDataSource
 extension PGImageCarousel: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.images.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let carouCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PGImageCarouselCell.self), for: indexPath) as! PGImageCarouselCell
         carouCell.setImage(image: self.images[indexPath.row])
         
@@ -94,12 +94,12 @@ extension PGImageCarousel: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegateFlowLayout
 extension PGImageCarousel: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let imageScale = 1.0 / CGFloat(self.gridSize)
         return collectionView.frame.size.applying(CGAffineTransform(scaleX: imageScale, y: imageScale))
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x / self.frame.width)
         self.pageIndicator.currentPage = page
     }
