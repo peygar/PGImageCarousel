@@ -1,5 +1,5 @@
 PODS:
-  - PGImageCarousel (0.1.0)
+  - PGImageCarousel (0.2.0)
 
 DEPENDENCIES:
   - PGImageCarousel (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PGImageCarousel: 4efc0058d7d062010336490f8ff033fec302eab0
+  PGImageCarousel: 7292a1691a7447bd17b1bb2ab3348ece337bee7a
 
 PODFILE CHECKSUM: f2bff4debbe5baba7ce158a58bae3f2d1e6c1299
 

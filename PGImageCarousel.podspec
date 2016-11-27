@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PGImageCarousel'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'A scrollable ImageCarousel with page indicator'
 
 # This description is used to generate tags and improve search results.
@@ -34,9 +34,11 @@ include page indicator and different grid sizes.
 
   s.source_files = 'PGImageCarousel/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'PGImageCarousel' => ['PGImageCarousel/Assets/*.png']
-  # }
+  s.resource_bundles = {
+    'PGImageCarousel' => [
+      'PGImageCarousel/Classes/*.xib'
+    ]
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

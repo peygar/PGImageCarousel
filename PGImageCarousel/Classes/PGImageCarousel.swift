@@ -15,13 +15,13 @@ public class PGImageCarousel: UIView {
     @IBOutlet weak var pageIndicator: UIPageControl!
     
     // MARK: Properties
-    var images = [UIImage]() {
+    public var images = [UIImage]() {
         didSet {
             self.pageIndicator.isHidden = self.images.count <= 1
             self.resetCollection()
         }
     }
-    var gridSize: Int = 1 {
+    public var gridSize: Int = 1 {
         didSet {
             guard self.gridSize > 0 else {
                 self.gridSize = 1
@@ -29,6 +29,9 @@ public class PGImageCarousel: UIView {
             }
             self.resetCollection()
         }
+    }
+    private var bundle: Bundle {
+        return Bundle(for: self.classForCoder)
     }
     
     // MARK: Init
@@ -54,8 +57,7 @@ public class PGImageCarousel: UIView {
     
     // MARK: Helpers
     fileprivate func loadViewFromNib() {
-        let viewNib = UINib(nibName: String(describing: PGImageCarousel.self), bundle: nil)
-        viewNib.instantiate(withOwner: self, options: nil)
+        self.bundle.loadNibNamed(String(describing: type(of: self)), owner: self, options: nil)
         self.contentView.frame = self.bounds
         self.addSubview(self.contentView)
     }
@@ -67,7 +69,7 @@ public class PGImageCarousel: UIView {
     }
     
     fileprivate func registerCellNib() {
-        let imageCellNib = UINib(nibName: String(describing: PGImageCarouselCell.self), bundle: nil)
+        let imageCellNib = UINib(nibName: String(describing: PGImageCarouselCell.self), bundle: self.bundle)
         self.imageCollectionView?.register(imageCellNib, forCellWithReuseIdentifier: String(describing: PGImageCarouselCell.self))
     }
     
