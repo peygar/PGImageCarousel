@@ -7,18 +7,15 @@
 //
 
 import UIKit
+import PGImageCarousel
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        let imageCarousel = PGImageCarousel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300))
+        imageCarousel.images = [#imageLiteral(resourceName: "testImage1"), #imageLiteral(resourceName: "testImage2"), #imageLiteral(resourceName: "testimage3")]
+        self.view.addSubview(imageCarousel)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 

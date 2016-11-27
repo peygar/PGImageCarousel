@@ -34,9 +34,11 @@ include page indicator and different grid sizes.
 
   s.source_files = 'PGImageCarousel/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'PGImageCarousel' => ['PGImageCarousel/Assets/*.png']
-  # }
+  s.resource_bundles = {
+    'PGImageCarousel' => [
+      'PGImageCarousel/Classes/*.xib'
+    ]
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
