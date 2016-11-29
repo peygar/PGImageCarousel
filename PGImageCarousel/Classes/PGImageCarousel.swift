@@ -15,6 +15,7 @@ public class PGImageCarousel: UIView {
     @IBOutlet weak var pageIndicator: UIPageControl!
     
     // MARK: Properties
+    public var delegate: PGImageCarouselDelegate?
     public var images = [UIImage]() {
         didSet {
             self.pageIndicator.isHidden = self.images.count <= 1
@@ -92,6 +93,10 @@ extension PGImageCarousel: UICollectionViewDataSource {
         
         return carouCell
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.delegate?.didSelectImage(at: indexPath.item)
+    }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
@@ -104,5 +109,6 @@ extension PGImageCarousel: UICollectionViewDelegateFlowLayout {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x / self.frame.width)
         self.pageIndicator.currentPage = page
+        self.delegate?.didScrollToImage(at: page)
     }
 }

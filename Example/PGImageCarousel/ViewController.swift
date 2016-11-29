@@ -9,8 +9,8 @@
 import UIKit
 import PGImageCarousel
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, PGImageCarouselDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let imageCarousel = PGImageCarousel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300))
