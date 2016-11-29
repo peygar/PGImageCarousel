@@ -14,12 +14,29 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var pageIndicator: UIPageControl!
     
-    // MARK: Properties
+    // MARK: Public Properties
     public var delegate: PGImageCarouselDelegate?
-    public var images = [UIImage]() {
-        didSet {
-            self.pageIndicator.isHidden = self.images.count <= 1
+    public var images: [UIImage] {
+        set(newImages) {
+            guard let firstImage = newImages.first, let lastImage = newImages.last else {
+                self.imagesWithCopies = []
+                return
+            }
+            self.pageIndicator.isHidden = newImages.count <= 1
+            var images = newImages
+            images.insert(lastImage, at: 0)
+            images.append(firstImage)
+            self.imagesWithCopies = images
             self.resetCollection()
+        }
+        get {
+            guard !self.imagesWithCopies.isEmpty else {
+                return []
+            }
+            var images = self.imagesWithCopies
+            images.removeFirst()
+            images.removeLast()
+            return images
         }
     }
     public var gridSize: Int = 1 {
@@ -31,9 +48,11 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
             self.resetCollection()
         }
     }
+    // MARK: Private Properties
     private var bundle: Bundle {
         return Bundle(for: self.classForCoder)
     }
+    fileprivate var imagesWithCopies = [UIImage]()
     
     // MARK: Init
     override public init(frame: CGRect) {
@@ -55,6 +74,7 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         super.layoutSubviews()
         self.imageCollectionView?.collectionViewLayout.invalidateLayout()
     }
+    // MARK: Configure
     
     // MARK: Helpers
     private func loadViewFromNib() {
@@ -78,24 +98,27 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         self.pageIndicator.numberOfPages = self.images.count / (self.gridSize * self.gridSize)
         self.pageIndicator.frame.size = self.pageIndicator.size(forNumberOfPages: self.pageIndicator.numberOfPages)
         self.imageCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.imageCollectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: false)
+        }
     }
 }
 
 // MARK: UICollectionViewDataSource
 private extension PGImageCarousel {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.images.count
+        return self.imagesWithCopies.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let carouCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PGImageCarouselCell.self), for: indexPath) as! PGImageCarouselCell
-        carouCell.setImage(image: self.images[indexPath.row])
+        carouCell.setImage(image: self.imagesWithCopies[indexPath.row])
         
         return carouCell
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelectImage(at: indexPath.item)
+        self.delegate?.didSelectImage(at: indexPath.item - 1)
     }
 }
 
@@ -107,7 +130,17 @@ private extension PGImageCarousel {
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let page = Int(scrollView.contentOffset.x / self.frame.width)
+        var imageNumber = Int(scrollView.contentOffset.x / self.frame.width)
+        var page: Int
+        if imageNumber == 0 {
+            page = self.imagesWithCopies.count - 3
+            self.imageCollectionView.scrollToItem(at: IndexPath(item: page + 1, section: 0), at: .centeredHorizontally, animated: false)
+        } else if imageNumber == self.imagesWithCopies.count - 1 {
+            page = 0
+            self.imageCollectionView.scrollToItem(at: IndexPath(item: page + 1, section: 0), at: .centeredHorizontally, animated: false)
+        } else {
+            page = imageNumber - 1
+        }
         self.pageIndicator.currentPage = page
         self.delegate?.didScrollToImage(at: page)
     }
