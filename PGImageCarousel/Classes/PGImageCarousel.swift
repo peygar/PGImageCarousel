@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class PGImageCarousel: UIView {
+public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: Outlets
     @IBOutlet fileprivate var contentView: UIView!
     @IBOutlet weak var imageCollectionView: UICollectionView!
@@ -46,7 +46,7 @@ public class PGImageCarousel: UIView {
         self.sharedInit()
     }
     
-    fileprivate func sharedInit() {
+    private func sharedInit() {
         self.loadViewFromNib()
         self.setupCollectionView()
     }
@@ -57,24 +57,24 @@ public class PGImageCarousel: UIView {
     }
     
     // MARK: Helpers
-    fileprivate func loadViewFromNib() {
+    private func loadViewFromNib() {
         self.bundle.loadNibNamed(String(describing: type(of: self)), owner: self, options: nil)
         self.contentView.frame = self.bounds
         self.addSubview(self.contentView)
     }
     
-    fileprivate func setupCollectionView() {
+    private func setupCollectionView() {
         self.registerCellNib()
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
     }
     
-    fileprivate func registerCellNib() {
+    private func registerCellNib() {
         let imageCellNib = UINib(nibName: String(describing: PGImageCarouselCell.self), bundle: self.bundle)
         self.imageCollectionView?.register(imageCellNib, forCellWithReuseIdentifier: String(describing: PGImageCarouselCell.self))
     }
     
-    fileprivate func resetCollection() {
+    private func resetCollection() {
         self.pageIndicator.numberOfPages = self.images.count / (self.gridSize * self.gridSize)
         self.pageIndicator.frame.size = self.pageIndicator.size(forNumberOfPages: self.pageIndicator.numberOfPages)
         self.imageCollectionView.reloadData()
@@ -82,7 +82,7 @@ public class PGImageCarousel: UIView {
 }
 
 // MARK: UICollectionViewDataSource
-extension PGImageCarousel: UICollectionViewDataSource {
+private extension PGImageCarousel {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.images.count
     }
@@ -100,7 +100,7 @@ extension PGImageCarousel: UICollectionViewDataSource {
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
-extension PGImageCarousel: UICollectionViewDelegateFlowLayout {
+private extension PGImageCarousel {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let imageScale = 1.0 / CGFloat(self.gridSize)
         return collectionView.frame.size.applying(CGAffineTransform(scaleX: imageScale, y: imageScale))
