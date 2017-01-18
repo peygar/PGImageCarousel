@@ -10,7 +10,7 @@ import UIKit
 
 public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: Outlets
-    @IBOutlet fileprivate var contentView: UIView!
+    @IBOutlet private var contentView: UIView!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var pageIndicator: UIPageControl!
     
@@ -51,6 +51,7 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         return Bundle(for: self.classForCoder)
     }
     private var imagesWithCopies = [UIImage]()
+    private var isAutoplayOn = false
     fileprivate var displayImages: [UIImage] {
         if self.hasInfiniteScroll {
             return self.imagesWithCopies
@@ -80,6 +81,17 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         self.imageCollectionView?.collectionViewLayout.invalidateLayout()
     }
     // MARK: Configure
+    public func startAutoplay(with interval: TimeInterval) {
+        guard !self.isAutoplayOn else {
+            return
+        }
+        self.isAutoplayOn = true
+        self.startAutoplayAnimation(with: interval)
+    }
+    
+    public func stopAutoplay() {
+        self.layer.removeAllAnimations()
+    }
     
     // MARK: Helpers
     private func loadViewFromNib() {
@@ -107,6 +119,34 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
             let firstImageIndexPath = IndexPath(item: self.hasInfiniteScroll ? 1 : 0, section: 0)
             self.imageCollectionView.scrollToItem(at: firstImageIndexPath, at: .centeredHorizontally, animated: false)
         }
+    }
+    
+    private func startAutoplayAnimation(with interval: TimeInterval) {
+        let nextPage = self.pageIndicator.currentPage + 1
+        let nextImageIndexPath = IndexPath(item:
+            self.pageNumberfordisplayImageIndex(nextPage + 1) + 1, section: 0)
+        UIView.animate(withDuration: interval, delay: interval, options: [], animations:
+            {
+                self.imageCollectionView.scrollToItem(at: nextImageIndexPath, at: .centeredHorizontally, animated: true)
+        }, completion: { [weak self] completed in
+            guard let strongSelf = self, completed else {
+                return
+            }
+            strongSelf.pageIndicator.currentPage += 1
+            strongSelf.startAutoplayAnimation(with: interval)
+        })
+    }
+    
+    private func pageNumberfordisplayImageIndex(_ index: Int) -> Int {
+        if self.hasInfiniteScroll {
+            return ((index - 1) + self.displayImages.count - 2) % self.displayImages.count - 2
+        } else {
+            return index
+        }
+    }
+    
+    private func displayImageIndexForPageNumber(_ pageNumber: Int) -> Int {
+        return pageNumber + 1
     }
 }
 

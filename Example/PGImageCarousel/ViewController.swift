@@ -21,7 +21,7 @@ class ViewController: UIViewController, PGImageCarouselDelegate {
         self.view.addSubview(imageCarousel)
         imageCarousel.hasInfiniteScroll = false
         imageCarousel.delegate = self
-        
+        imageCarousel.startAutoplay(with: 3.0)
         
         let button = UIButton(type: .roundedRect)
         button.frame = CGRect(x: 50, y: 400, width: 100, height: 20)
