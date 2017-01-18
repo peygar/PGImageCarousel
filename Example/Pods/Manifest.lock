@@ -1,5 +1,9 @@
 PODS:
-  - PGImageCarousel (0.2.0)
+  - Alamofire (4.3.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
+  - PGImageCarousel (0.2.0):
+    - AlamofireImage (~> 3.2)
 
 DEPENDENCIES:
   - PGImageCarousel (from `../`)
@@ -9,7 +13,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PGImageCarousel: 7292a1691a7447bd17b1bb2ab3348ece337bee7a
+  Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  PGImageCarousel: e80557857bcb0898260a3cadcaed46b0955d0c42
 
 PODFILE CHECKSUM: f2bff4debbe5baba7ce158a58bae3f2d1e6c1299
 

@@ -18,8 +18,8 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-This CocoaPod provides a flexible and reusable scrollable ImageCarousel 
-UIComponent that can be initialized with an array of images. Features 
+This CocoaPod provides a flexible and reusable scrollable ImageCarousel
+UIComponent that can be initialized with an array of images. Features
 include page indicator and different grid sizes.
                        DESC
 
@@ -33,7 +33,7 @@ include page indicator and different grid sizes.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'PGImageCarousel/Classes/**/*'
-  
+
   s.resource_bundles = {
     'PGImageCarousel' => [
       'PGImageCarousel/Classes/*.xib'
@@ -42,5 +42,5 @@ include page indicator and different grid sizes.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'AlamofireImage', '~> 3.2'
 end

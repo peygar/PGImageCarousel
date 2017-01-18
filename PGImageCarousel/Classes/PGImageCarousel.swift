@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: Outlets
