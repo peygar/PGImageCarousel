@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PGImageCarousel'
-  s.version          = '0.2.0'
+  s.version          = '1.0'
   s.summary          = 'A scrollable ImageCarousel with page indicator'
 
 # This description is used to generate tags and improve search results.
@@ -18,8 +18,8 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-This CocoaPod provides a flexible and reusable scrollable ImageCarousel 
-UIComponent that can be initialized with an array of images. Features 
+This CocoaPod provides a flexible and reusable scrollable ImageCarousel
+UIComponent that can be initialized with an array of images. Features
 include page indicator and different grid sizes.
                        DESC
 
@@ -33,7 +33,7 @@ include page indicator and different grid sizes.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'PGImageCarousel/Classes/**/*'
-  
+
   s.resource_bundles = {
     'PGImageCarousel' => [
       'PGImageCarousel/Classes/*.xib'
