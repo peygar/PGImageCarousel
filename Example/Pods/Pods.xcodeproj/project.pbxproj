@@ -104,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E14D9F963283FABEC3542D319BA24526 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,12 +473,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1C6C7CE88B55594212634DAC1648EBD5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "PGImageCarousel-PGImageCarousel";
-			target = 1F2A1232231874A519672D73C75E4BFB /* PGImageCarousel-PGImageCarousel */;
-			targetProxy = B74744DA283B3284A8EC1BE6DA14AC0A /* PBXContainerItemProxy */;
-		};
 		32AF15FA1D5D34C36AD0032130C6297C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PGImageCarousel;
@@ -595,23 +590,6 @@
 			};
 			name = Release;
 		};
-		5E73BB03EC19A9F24A1E30EB7E5FA0C6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59572453EDD63D9F321BFE8F2FF03AA8 /* PGImageCarousel.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/PGImageCarousel";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/PGImageCarousel/ResourceBundle-PGImageCarousel-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = PGImageCarousel;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
 		886ABE074A43402DDCD1F1C22454C65D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 34FA6F1BB301EF178E7FE8C6EA73DB06 /* Pods-PGImageCarousel_Example.debug.xcconfig */;
@@ -647,23 +625,6 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
-		};
-		88B72FE8C04018908FEE28B8A48F3095 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59572453EDD63D9F321BFE8F2FF03AA8 /* PGImageCarousel.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/PGImageCarousel";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/PGImageCarousel/ResourceBundle-PGImageCarousel-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = PGImageCarousel;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
 		};
 		8DED8AD26D381A6ACFF202E5217EC498 /* Release */ = {
 			isa = XCBuildConfiguration;
