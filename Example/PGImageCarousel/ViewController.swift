@@ -21,26 +21,11 @@ class ViewController: UIViewController, PGImageCarouselDelegate {
         self.view.addSubview(imageCarousel)
         imageCarousel.hasInfiniteScroll = false
         imageCarousel.delegate = self
-        imageCarousel.startAutoplay(with: 3.0)
-        
-        let button = UIButton(type: .roundedRect)
-        button.frame = CGRect(x: 50, y: 400, width: 100, height: 20)
-        button.setTitle("Button", for: .normal)
-        button.addTarget(self, action: #selector(self.foo), for: .touchUpInside)
-        self.view.addSubview(button)
         
         label = UILabel()
         label.frame = CGRect(x: 50, y: 500, width: 100, height: 20)
         label.text = "index: 0"
         self.view.addSubview(label)
-    }
-    
-    func foo() {
-        
-    }
-    
-    func didScrollToImage(at index: Int) {
-        label.text = "index: \(index)"
     }
 }
 

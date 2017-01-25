@@ -8,18 +8,51 @@
 
 import UIKit
 
+/**
+ UIComponent for a quick image carousel. Can be initialized through nibs or code.
+ Features include:
+ - Scrollable image carousel
+ - page indicator
+ - continous scroll
+ - variable grid size
+ - delegate callbacks
+ */
 public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: Outlets
     @IBOutlet private var contentView: UIView!
+    
+    /**
+     Collection view of images.
+    */
     @IBOutlet weak var imageCollectionView: UICollectionView!
+    
+    /**
+     Page indicator shows page number of currently viewed image.
+     */
     @IBOutlet weak var pageIndicator: UIPageControl!
     
     // MARK: Public Properties
-    public var delegate: PGImageCarouselDelegate?
+    /**
+     The object that acts as the delegate of the image carousel.
+     
+     The delegate must adopt the PGImageCarouselDelegate protocol. 
+     The image carousel maintains a weak reference to the delegate object.
+     
+     The delegate object is responsible for managing selection behavior 
+     and interactions with individual items.
+     */
+    public weak var delegate: PGImageCarouselDelegate?
+    
+    /**
+     The images inside the image carousel. 
+     
+     Reloads carousel on setting, unless the autoReloads property is false.
+     */
     public var images = [UIImage]() {
         didSet {
             guard let firstImage = self.images.first, let lastImage = self.images.last else {
                 self.imagesWithCopies = []
+                self.autoReload()
                 return
             }
             self.pageIndicator.isHidden = self.images.count <= 1
@@ -27,37 +60,65 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
             images.insert(lastImage, at: 0)
             images.append(firstImage)
             self.imagesWithCopies = images
-            self.resetCollection()
+            self.autoReload()
         }
     }
-    public var gridSize: Int = 1 {
+    /**
+     Defines the grid size for image carousel. 1 means 1x1 grid -> 1 image per 
+     carousel page, 2 means 2x2 grid -> 4 images per carousel page etc.
+     
+     @Discussion Recommended to hide page indicator if gridSize is greater 1.
+     
+     Reloads carousel on setting, unless the autoReloads property is false.
+     */
+    public var gridSize = 1 {
         didSet {
             guard self.gridSize > 0 else {
                 self.gridSize = 1
+                self.autoReload()
                 return
             }
-            self.resetCollection()
+            self.autoReload()
         }
     }
+    
+    /**
+     If set to true, carousel images are on an infinte loop and user can swipe 
+     in one direction without limit.
+     
+     Reloads carousel on setting, unless the autoReloads property is false
+     */
     public var hasInfiniteScroll = true {
         didSet {
             if oldValue != self.hasInfiniteScroll {
-                self.resetCollection()
+                self.autoReload()
             }
         }
     }
+    
+    /**
+     Defines if image carousel reloads data on changing properties
+     */
+    public var autoReloads = true
     // MARK: Private Properties
-    private var bundle: Bundle {
-        return Bundle(for: self.classForCoder)
-    }
     private var imagesWithCopies = [UIImage]()
-    private var isAutoplayOn = false
     fileprivate var displayImages: [UIImage] {
         if self.hasInfiniteScroll {
             return self.imagesWithCopies
         } else {
             return self.images
         }
+    }
+    private var bundle: Bundle {
+        return Bundle(for: self.classForCoder)
+    }
+    
+    // MARK: Configure
+    /**
+     Reloads image carousel. Includes images, page control and infiniteScroll
+     */
+    public func reload() {
+        self.resetCollection()
     }
     
     // MARK: Init
@@ -106,6 +167,12 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
         DispatchQueue.main.async {
             let firstImageIndexPath = IndexPath(item: self.hasInfiniteScroll ? 1 : 0, section: 0)
             self.imageCollectionView.scrollToItem(at: firstImageIndexPath, at: .centeredHorizontally, animated: false)
+        }
+    }
+    
+    private func autoReload() {
+        if self.autoReloads {
+            self.resetCollection()
         }
     }
 }
