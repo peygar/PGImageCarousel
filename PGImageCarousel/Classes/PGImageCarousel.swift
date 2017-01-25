@@ -17,7 +17,7 @@ import UIKit
  - variable grid size
  - delegate callbacks
  */
-public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+public class PGImageCarousel: UIView {
     // MARK: Outlets
     @IBOutlet private var contentView: UIView!
     
@@ -178,7 +178,7 @@ public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionVi
 }
 
 // MARK: UICollectionViewDataSource
-private extension PGImageCarousel {
+extension PGImageCarousel: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.displayImages.count
     }
@@ -196,14 +196,14 @@ private extension PGImageCarousel {
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
-private extension PGImageCarousel {
+extension PGImageCarousel: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let imageScale = 1.0 / CGFloat(self.gridSize)
         return collectionView.frame.size.applying(CGAffineTransform(scaleX: imageScale, y: imageScale))
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        var imageNumber = Int(scrollView.contentOffset.x / self.frame.width)
+        let imageNumber = Int(scrollView.contentOffset.x / self.frame.width)
         var page: Int
         if self.hasInfiniteScroll {
             if imageNumber == 0 {
