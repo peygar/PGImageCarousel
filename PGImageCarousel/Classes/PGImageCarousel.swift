@@ -8,30 +8,117 @@
 
 import UIKit
 
-public class PGImageCarousel: UIView {
+/**
+ UIComponent for a quick image carousel. Can be initialized through nibs or code.
+ Features include:
+ - Scrollable image carousel
+ - page indicator
+ - continous scroll
+ - variable grid size
+ - delegate callbacks
+ */
+public class PGImageCarousel: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: Outlets
-    @IBOutlet fileprivate var contentView: UIView!
+    @IBOutlet private var contentView: UIView!
+    
+    /**
+     Collection view of images.
+    */
     @IBOutlet weak var imageCollectionView: UICollectionView!
+    
+    /**
+     Page indicator shows page number of currently viewed image.
+     */
     @IBOutlet weak var pageIndicator: UIPageControl!
     
-    // MARK: Properties
+    // MARK: Public Properties
+    /**
+     The object that acts as the delegate of the image carousel.
+     
+     The delegate must adopt the PGImageCarouselDelegate protocol. 
+     The image carousel maintains a weak reference to the delegate object.
+     
+     The delegate object is responsible for managing selection behavior 
+     and interactions with individual items.
+     */
+    public weak var delegate: PGImageCarouselDelegate?
+    
+    /**
+     The images inside the image carousel. 
+     
+     Reloads carousel on setting, unless the autoReloads property is false.
+     */
     public var images = [UIImage]() {
         didSet {
+            guard let firstImage = self.images.first, let lastImage = self.images.last else {
+                self.imagesWithCopies = []
+                self.autoReload()
+                return
+            }
             self.pageIndicator.isHidden = self.images.count <= 1
-            self.resetCollection()
+            var images = self.images
+            images.insert(lastImage, at: 0)
+            images.append(firstImage)
+            self.imagesWithCopies = images
+            self.autoReload()
         }
     }
-    public var gridSize: Int = 1 {
+    /**
+     Defines the grid size for image carousel. 1 means 1x1 grid -> 1 image per 
+     carousel page, 2 means 2x2 grid -> 4 images per carousel page etc.
+     
+     @Discussion Recommended to hide page indicator if gridSize is greater 1.
+     
+     Reloads carousel on setting, unless the autoReloads property is false.
+     */
+    public var gridSize = 1 {
         didSet {
             guard self.gridSize > 0 else {
                 self.gridSize = 1
+                self.autoReload()
                 return
             }
-            self.resetCollection()
+            self.autoReload()
+        }
+    }
+    
+    /**
+     If set to true, carousel images are on an infinte loop and user can swipe 
+     in one direction without limit.
+     
+     Reloads carousel on setting, unless the autoReloads property is false
+     */
+    public var hasInfiniteScroll = true {
+        didSet {
+            if oldValue != self.hasInfiniteScroll {
+                self.autoReload()
+            }
+        }
+    }
+    
+    /**
+     Defines if image carousel reloads data on changing properties
+     */
+    public var autoReloads = true
+    // MARK: Private Properties
+    private var imagesWithCopies = [UIImage]()
+    fileprivate var displayImages: [UIImage] {
+        if self.hasInfiniteScroll {
+            return self.imagesWithCopies
+        } else {
+            return self.images
         }
     }
     private var bundle: Bundle {
         return Bundle(for: self.classForCoder)
+    }
+    
+    // MARK: Configure
+    /**
+     Reloads image carousel. Includes images, page control and infiniteScroll
+     */
+    public func reload() {
+        self.resetCollection()
     }
     
     // MARK: Init
@@ -45,7 +132,7 @@ public class PGImageCarousel: UIView {
         self.sharedInit()
     }
     
-    fileprivate func sharedInit() {
+    private func sharedInit() {
         self.loadViewFromNib()
         self.setupCollectionView()
     }
@@ -56,53 +143,82 @@ public class PGImageCarousel: UIView {
     }
     
     // MARK: Helpers
-    fileprivate func loadViewFromNib() {
+    private func loadViewFromNib() {
         self.bundle.loadNibNamed(String(describing: type(of: self)), owner: self, options: nil)
         self.contentView.frame = self.bounds
         self.addSubview(self.contentView)
     }
     
-    fileprivate func setupCollectionView() {
+    private func setupCollectionView() {
         self.registerCellNib()
         self.imageCollectionView.dataSource = self
         self.imageCollectionView.delegate = self
     }
     
-    fileprivate func registerCellNib() {
+    private func registerCellNib() {
         let imageCellNib = UINib(nibName: String(describing: PGImageCarouselCell.self), bundle: self.bundle)
         self.imageCollectionView?.register(imageCellNib, forCellWithReuseIdentifier: String(describing: PGImageCarouselCell.self))
     }
     
-    fileprivate func resetCollection() {
+    private func resetCollection() {
         self.pageIndicator.numberOfPages = self.images.count / (self.gridSize * self.gridSize)
         self.pageIndicator.frame.size = self.pageIndicator.size(forNumberOfPages: self.pageIndicator.numberOfPages)
         self.imageCollectionView.reloadData()
+        DispatchQueue.main.async {
+            let firstImageIndexPath = IndexPath(item: self.hasInfiniteScroll ? 1 : 0, section: 0)
+            self.imageCollectionView.scrollToItem(at: firstImageIndexPath, at: .centeredHorizontally, animated: false)
+        }
+    }
+    
+    private func autoReload() {
+        if self.autoReloads {
+            self.resetCollection()
+        }
     }
 }
 
 // MARK: UICollectionViewDataSource
-extension PGImageCarousel: UICollectionViewDataSource {
+private extension PGImageCarousel {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.images.count
+        return self.displayImages.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let carouCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PGImageCarouselCell.self), for: indexPath) as! PGImageCarouselCell
-        carouCell.setImage(image: self.images[indexPath.row])
+        carouCell.setImage(image: self.displayImages[indexPath.row])
         
         return carouCell
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.delegate?.didSelectImage(at: indexPath.item - 1)
     }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
-extension PGImageCarousel: UICollectionViewDelegateFlowLayout {
+private extension PGImageCarousel {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let imageScale = 1.0 / CGFloat(self.gridSize)
         return collectionView.frame.size.applying(CGAffineTransform(scaleX: imageScale, y: imageScale))
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let page = Int(scrollView.contentOffset.x / self.frame.width)
+        var imageNumber = Int(scrollView.contentOffset.x / self.frame.width)
+        var page: Int
+        if self.hasInfiniteScroll {
+            if imageNumber == 0 {
+                page = self.displayImages.count - 3
+                self.imageCollectionView.scrollToItem(at: IndexPath(item: page + 1, section: 0), at: .centeredHorizontally, animated: false)
+            } else if imageNumber == self.displayImages.count - 1 {
+                page = 0
+                self.imageCollectionView.scrollToItem(at: IndexPath(item: page + 1, section: 0), at: .centeredHorizontally, animated: false)
+            } else {
+                page = imageNumber - 1
+            }
+        } else {
+            page = imageNumber
+        }
         self.pageIndicator.currentPage = page
+        self.delegate?.didScrollToImage(at: page)
     }
 }
